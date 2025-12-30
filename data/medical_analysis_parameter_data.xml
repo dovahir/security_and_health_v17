@@ -276,5 +276,11 @@
 <!--            <field name="work_center_id" ref="work_center_oficinas"/>-->
 <!--        </record>-->
 
+<!--    ######################################################################################  -->
+
+        <record id="activity_hot_work" model="activity.type">
+            <field name="name">Trabajos en caliente</field>
+        </record>
+
     </data>
 </odoo>

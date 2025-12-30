@@ -61,6 +61,7 @@
                                 context="{'time_format': 'HH:mm'}"
                                 readonly="state == 'concluded'"/>
                             <field name="type" required="1" readonly="state == 'concluded'"/>
+                            <field name="cause" required="1" readonly="state == 'concluded'"/>
                             <field name="employee_id"
                                    options="{'no_create': True}"
                                    readonly="state == 'concluded'"
@@ -84,7 +85,7 @@
                                    options=" {'no_create': True}"
                                    domain="[('location_id', '=', work_center_id)]"/>
                             <field name="event_severity" required="1" readonly="state == 'concluded'"/>
-                            <field name="task_type" readonly="state == 'concluded'"/>
+                            <field name="activity_type_id" readonly="state == 'concluded'"/>
                             <field name="injury_type_id" invisible="type != 'accident'" required="type == 'accident'" readonly="state == 'concluded'"/>
                             <field name="injury_severity" invisible="type != 'accident'" required="type == 'accident'" readonly="state == 'concluded'"/>
                             <field name="witnesses" widget="many2many_tags" readonly="state == 'concluded'" options="{'no_open': False, 'no_create': True}"/>
@@ -95,7 +96,8 @@
                     <notebook>
                         <page string="Detalles y Evidencias">
                             <group>
-                                <field name="details" required="1" placeholder="Describe la situación..." readonly="state == 'concluded'"/>
+<!--                                <field name="details" required="1" placeholder="Describe la situación..." readonly="state == 'concluded'"/>-->
+                                <field name="details" required="1" widget="html" readonly="state == 'concluded'"/>
                             </group>
                             <group string="Evidencias Fotográficas" name="group_evidence">
                                 <table>

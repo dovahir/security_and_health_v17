@@ -17,8 +17,20 @@ class SecuritySituation(models.Model):
     type = fields.Selection([
         ('incident', 'Incidente'),
         ('accident', 'Accidente'),
-        ('quasi_accident', 'Quasi Accidente')
-    ], string="Situación", required=True, tracking=True)
+        ('quasi_accident', 'Quasi Accidente'),
+        ('lost time injury', 'Incidente con Pérdida de Tiempo'),
+        ('medical treatment', 'Requiere tratamiento médico'),
+        ('first aid', 'Primeros Auxilios'),
+        ('restricted work case', 'Caso de Trabajo Restringido'),
+        ('non work related', 'No Relacionado con Act. Laborales'),
+        ('near misses incident', 'Incidente "Near Misses"')
+    ], string="Tipo de Situación", required=True, tracking=True)
+
+    cause = fields.Selection([
+           ('unsafe act', 'Acto Inseguro'),
+           ('insecure condition', 'Condición Insegura')
+      ], string='Causa', required=True, tracking=True)
+
 
     employee_id = fields.Many2one(  #Opcional
         'hr.employee', string="Empleado",
@@ -53,6 +65,7 @@ class SecuritySituation(models.Model):
         help="Empleado que atendió activamente la situación", tracking=True)
 
     company_id = fields.Many2one('res.company',
+                                 string="Empresa",
                                  required=True,
                                  default=lambda self: self.env.company)
 
@@ -70,13 +83,16 @@ class SecuritySituation(models.Model):
         ('critic', 'Crítica')
     ], string="Severidad del Evento", required=True, tracking=True)
 
-    task_type = fields.Selection([
-        ('hot_work', 'Trabajos en caliente'),
-        ('high_work', 'Trabajos en altura'),
-        ('confined_spaces', 'Espacios confinados'),
-        ('maneuvers', 'Maniobras'),
-        ('unknown', 'Desconocida'),
-    ], string="Tipo de tareas")
+    # task_type = fields.Selection([
+    #     ('hot_work', 'Trabajos en caliente'),
+    #     ('high_work', 'Trabajos en altura'),
+    #     ('confined_spaces', 'Espacios confinados'),
+    #     ('maneuvers', 'Maniobras'),
+    #     ('unknown', 'Desconocida'),
+    # ], string="Tipo de Actividad")
+
+    activity_type_id = fields.Many2one('activity.type',
+                                       string="Tipo de Actividad")
 
     injury_type_id = fields.Many2one('injury.type',
                                      string="Tipo de lesión",
@@ -98,7 +114,9 @@ class SecuritySituation(models.Model):
     )
 
     # Notebook Detalles y evidencias
-    details = fields.Text(string='Detalles', required=True, tracking=True, help="Describe la situación")
+    # details = fields.Text(string='Detalles', required=True, tracking=True, help="Describe la situación")
+    details = fields.Html(sanitize=True, string='Descripción del suceso')
+
 
     evidence_photo_1 = fields.Image(string="Foto de evidencia 1", max_width=1024, max_height=1024)
     evidence_photo_2 = fields.Image(string="Foto de evidencia 2", max_width=1024, max_height=1024)
