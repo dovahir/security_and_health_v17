@@ -57,11 +57,11 @@ class SecuritySituation(models.Model):
                                  default=lambda self: self.env.company)
 
     work_center_id = fields.Many2one('hr.work.location',
-                                     string="Centro de Trabajo")
+                                     string="Ubicacion de Trabajo")
 
     work_area_id = fields.Many2one('work.area',
                                    string="Área / Lugar exacto",
-                                   help="Debe seleccionar centro de trabajo")
+                                   help="Debe seleccionar ubicacion de trabajo")
 
     event_severity = fields.Selection([
         ('minor', 'Menor'),

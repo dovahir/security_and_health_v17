@@ -21,13 +21,13 @@ class WorkCenter(models.Model):
                                inverse_name='location_id',
                                string="Áreas")
 
-    # num_areas = fields.Integer(string='Número de áreas registradas', compute='_compute_count_areas')
-    #
-    # # Metodo para contar cuantas areas existen en el centro de trabajo
-    # @api.depends('area_ids', 'num_areas')
-    # def _compute_count_areas(self):
-    #     for record in self:
-    #         record.num_areas = len(record.area_ids)
+    num_areas = fields.Integer(string='Número de áreas registradas', compute='_compute_count_areas')
+
+    # Metodo para contar cuantas areas existen en el centro de trabajo
+    @api.depends('area_ids', 'num_areas')
+    def _compute_count_areas(self):
+        for record in self:
+            record.num_areas = len(record.area_ids)
     #
     # # Metodo para hacer funcionar el boton duplicar aun con sql_constraints
     # @api.returns('self', lambda value: value.id)

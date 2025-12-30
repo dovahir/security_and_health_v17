@@ -16,7 +16,7 @@
         'security/security_and_health_security.xml',
         'security/ir.model.access.csv',
         'views/security_situation_view.xml',
-        'views/work_center_view.xml',
+        'views/work_area_view.xml',
         'views/hr_employee_view.xml',
         'views/injury_type_view.xml',
         'report/report_templates.xml',

@@ -20,7 +20,7 @@
                             <table class="table table-sm table-borderless" style="width: 100%;">
                                 <tr>
                                     <td><strong>Tipo de tarea: </strong><span t-field="doc.security_situation_id.task_type"/></td>
-                                    <td><strong>Centro de Trabajo:</strong><span t-field="doc.security_situation_id.work_center_id.name"/></td>
+                                    <td><strong>Ubicacion de Trabajo:</strong><span t-field="doc.security_situation_id.work_center_id.name"/></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Tipo de situación: </strong><span t-field="doc.security_situation_id.type"/></td>

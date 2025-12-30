@@ -173,7 +173,7 @@
                             context="{'group_by': 'type'}"/>
                     <filter name="group_by_severity" string="Severidad"
                             context="{'group_by': 'event_severity'}"/>
-                    <filter name="group_by_work_center" string="Centro de Trabajo"
+                    <filter name="group_by_work_center" string="Ubicaciones de Trabajo"
                             context="{'group_by': 'work_center_id'}"/>
                     <filter name="group_by_employee" string="Empleado"
                             context="{'group_by': 'employee_id'}"/>

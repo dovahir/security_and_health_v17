@@ -49,8 +49,8 @@
               parent="security_health_root_menu" sequence="50" groups="security_and_health.group_security_and_health_manager"/>
 
 <!--        Sub-menús Catálogos-->
-        <menuitem id="work_center_menu" name="Centros y Areas de Trabajo"
-              parent="catalogs_menu" action="action_work_center" sequence="10"/>
+        <menuitem id="work_area_menu" name="Ubicaciones y Areas de Trabajo"
+              parent="catalogs_menu" action="action_work_area" sequence="10"/>
 
         <menuitem id="injury_type_menu" name="Tipos de Lesión"
               parent="catalogs_menu" action="action_injury_type" sequence="20"/>

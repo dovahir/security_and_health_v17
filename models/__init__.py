@@ -1,7 +1,6 @@
 from . import security_situation
 from . import hr_employee
 from . import injury_type
-from . import work_center
 from . import work_area
 from . import final_report
 from . import employee_health
