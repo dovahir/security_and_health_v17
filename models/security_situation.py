@@ -91,8 +91,9 @@ class SecuritySituation(models.Model):
     #     ('unknown', 'Desconocida'),
     # ], string="Tipo de Actividad")
 
-    activity_type_id = fields.Many2one('activity.type',
-                                       string="Tipo de Actividad")
+    activities_type_id = fields.Many2one('activities.type',
+                                       string="Tipo de Actividad",
+                                       tracking=True)
 
     injury_type_id = fields.Many2one('injury.type',
                                      string="Tipo de lesión",

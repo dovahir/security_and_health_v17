@@ -55,6 +55,9 @@
         <menuitem id="injury_type_menu" name="Tipos de Lesión"
               parent="catalogs_menu" action="action_injury_type" sequence="20"/>
 
+        <menuitem id="activities_type_menu" name="Tipos de Actividad"
+              parent="catalogs_menu" action="action_activities_type" sequence="22"/>
+
         <menuitem id="medical_analysis_parameter_menu" name="Parámetros de Análisis"
               parent="catalogs_menu" action="action_medical_analysis_parameter" sequence="25"/>
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="view_activities_type_form" model="ir.ui.view">
+        <field name="name">Activities Type Form</field>
+        <field name="model">activities.type</field>
+        <field name="arch" type="xml">
+            <form string="Tipo de Actividades">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_activities_type_tree" model="ir.ui.view">
+        <field name="name">Activities Type Tree</field>
+        <field name="model">activities.type</field>
+        <field name="arch" type="xml">
+            <tree string="Tipo de Actividades" editable="bottom" create="True">
+                <field name="name"/>
+                <field name="create_date" string="Fecha de creación" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_activities_type" model="ir.actions.act_window">
+        <field name="name">Tipos de Actividad</field>
+        <field name="res_model">activities.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

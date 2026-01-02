@@ -1,5 +1,6 @@
 from odoo import models,fields
 
+
 class InjuryType(models.Model):
     _name = "injury.type"
     _description = "Tipo de Lesión"

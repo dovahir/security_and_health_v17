@@ -1,6 +1,6 @@
 from . import security_situation
 from . import hr_employee
-from . import activity_type
+from . import activities_type
 from . import injury_type
 from . import work_area
 from . import final_report

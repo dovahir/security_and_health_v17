@@ -85,11 +85,10 @@
                                    options=" {'no_create': True}"
                                    domain="[('location_id', '=', work_center_id)]"/>
                             <field name="event_severity" required="1" readonly="state == 'concluded'"/>
-                            <field name="activity_type_id" readonly="state == 'concluded'"/>
                             <field name="injury_type_id" invisible="type != 'accident'" required="type == 'accident'" readonly="state == 'concluded'"/>
                             <field name="injury_severity" invisible="type != 'accident'" required="type == 'accident'" readonly="state == 'concluded'"/>
                             <field name="witnesses" widget="many2many_tags" readonly="state == 'concluded'" options="{'no_open': False, 'no_create': True}"/>
-<!--                            <field name="state"/>-->
+                            <field name="activities_type_id" readonly="state == 'concluded'"/>
                         </group>
                     </group>
 

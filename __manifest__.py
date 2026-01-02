@@ -18,6 +18,7 @@
         'views/security_situation_view.xml',
         'views/work_area_view.xml',
         'views/hr_employee_view.xml',
+        'views/activities_type_view.xml',
         'views/injury_type_view.xml',
         'report/report_templates.xml',
         'views/final_report_view.xml',

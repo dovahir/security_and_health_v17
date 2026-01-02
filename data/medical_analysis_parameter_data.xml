@@ -278,8 +278,24 @@
 
 <!--    ######################################################################################  -->
 
-        <record id="activity_hot_work" model="activity.type">
-            <field name="name">Trabajos en caliente</field>
+        <record id="activities_hot_work" model="activities.type">
+            <field name="name">Trabajos en Caliente</field>
+        </record>
+
+        <record id="activities_high_work" model="activities.type">
+            <field name="name">Trabajos en Altura</field>
+        </record>
+
+        <record id="activities_confined_spaces" model="activities.type">
+            <field name="name">Espacios Confinados</field>
+        </record>
+
+        <record id="activities_maneuvers" model="activities.type">
+            <field name="name">Maniobras</field>
+        </record>
+
+        <record id="activities_unknown" model="activities.type">
+            <field name="name">Desconocida</field>
         </record>
 
     </data>
