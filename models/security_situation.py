@@ -18,12 +18,12 @@ class SecuritySituation(models.Model):
         ('incident', 'Incidente'),
         ('accident', 'Accidente'),
         ('quasi_accident', 'Quasi Accidente'),
-        ('lost time injury', 'Incidente con Pérdida de Tiempo'),
-        ('medical treatment', 'Requiere tratamiento médico'),
-        ('first aid', 'Primeros Auxilios'),
-        ('restricted work case', 'Caso de Trabajo Restringido'),
-        ('non work related', 'No Relacionado con Act. Laborales'),
-        ('near misses incident', 'Incidente "Near Misses"')
+        ('lost_time_injury', 'Incidente con Pérdida de Tiempo'),
+        ('medical_treatment', 'Requiere tratamiento médico'),
+        ('first_aid', 'Primeros Auxilios'),
+        ('restricted_work_case', 'Caso de Trabajo Restringido'),
+        ('non_work_related', 'No Relacionado con Act. Laborales'),
+        ('near_misses_incident', 'Incidente "Near Misses"')
     ], string="Tipo de Situación", required=True, tracking=True)
 
     cause = fields.Selection([
@@ -95,6 +95,20 @@ class SecuritySituation(models.Model):
                                        string="Tipo de Actividad",
                                        tracking=True)
 
+    factor_type = fields.Selection([
+        ('by blow', 'Por golpe'),
+        ('by contact', 'Por contacto'),
+        ('by hitting against', 'Por pegar contra'),
+        ('by contact with', 'Por contacto con'),
+        ('by entrapment', 'Por atrapamiento'),
+        ('by catching', 'Por prendimiento'),
+        ('by imprisonment', 'Por aprisionamiento'),
+        ('by fall from height', 'Por caída a desnivel'),
+        ('by fall on level ground', 'Por caída a nivel'),
+        ('by overexertion', 'Por sobreesfuerzo'),
+        ('by exposure', 'Por exposición')
+    ], string="Factor Tipo", required=True, tracking=True, help="Tipo de Accidente")
+
     injury_type_id = fields.Many2one('injury.type',
                                      string="Tipo de lesión",
                                      tracking=True
@@ -116,8 +130,9 @@ class SecuritySituation(models.Model):
 
     # Notebook Detalles y evidencias
     # details = fields.Text(string='Detalles', required=True, tracking=True, help="Describe la situación")
-    details = fields.Html(sanitize=True, string='Descripción del suceso')
-
+    details_whats = fields.Text(string="Qué pasó")
+    details_how = fields.Text(string="Cómo pasó")
+    details_when = fields.Text(string="Cuándo pasó")
 
     evidence_photo_1 = fields.Image(string="Foto de evidencia 1", max_width=1024, max_height=1024)
     evidence_photo_2 = fields.Image(string="Foto de evidencia 2", max_width=1024, max_height=1024)

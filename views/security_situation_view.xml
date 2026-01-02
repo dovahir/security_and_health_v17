@@ -85,18 +85,20 @@
                                    options=" {'no_create': True}"
                                    domain="[('location_id', '=', work_center_id)]"/>
                             <field name="event_severity" required="1" readonly="state == 'concluded'"/>
-                            <field name="injury_type_id" invisible="type != 'accident'" required="type == 'accident'" readonly="state == 'concluded'"/>
-                            <field name="injury_severity" invisible="type != 'accident'" required="type == 'accident'" readonly="state == 'concluded'"/>
+                            <field name="injury_type_id" readonly="state == 'concluded'"/>
+                            <field name="injury_severity" readonly="state == 'concluded'"/>
                             <field name="witnesses" widget="many2many_tags" readonly="state == 'concluded'" options="{'no_open': False, 'no_create': True}"/>
                             <field name="activities_type_id" readonly="state == 'concluded'"/>
+                            <field name="factor_type"/>
                         </group>
                     </group>
 
                     <notebook>
                         <page string="Detalles y Evidencias">
-                            <group>
-<!--                                <field name="details" required="1" placeholder="Describe la situación..." readonly="state == 'concluded'"/>-->
-                                <field name="details" required="1" widget="html" readonly="state == 'concluded'"/>
+                            <group string="Descripción del Suceso">
+                                <field name="details_whats" required="1" readonly="state == 'concluded'"/>
+                                <field name="details_how" required="1" readonly="state == 'concluded'"/>
+                                <field name="details_when" required="1" readonly="state == 'concluded'"/>
                             </group>
                             <group string="Evidencias Fotográficas" name="group_evidence">
                                 <table>
@@ -151,6 +153,7 @@
         <field name="arch" type="xml">
             <search string="Buscar situaciones">
                 <field name="type"/>
+                <field name="factor_type"/>
                 <field name="event_severity"/>
                 <field name="work_center_id"/>
                 <field name="employee_id"/>
@@ -158,12 +161,24 @@
                 <field name="job_id"/>
                 <field name="parent_id"/>
 
-                <filter name="only_accidents" string="Solo Accidentes"
+                <filter name="only_accidents" string="Accidentes"
                         domain="[('type','=','accident')]"/>
-                <filter name="only_incidents" string="Solo Incidentes"
+                <filter name="only_incidents" string="Incidentes"
                         domain="[('type', '=', 'incident')]"/>
-                <filter name="only_quasi_accidents" string="Solo Cuasi Accidentes"
+                <filter name="only_quasi_accidents" string="Cuasi Accidentes"
                         domain="[('type','=','quasi_accident')]"/>
+                <filter name="only_lost_time_injury" string="Incidente con Pérdida de Tiempo"
+                        domain="[('type','=','lost_time_injury')]"/>
+                <filter name="only_medical_treatment" string="Requiere tratamiento médico"
+                        domain="[('type', '=', 'medical_treatment')]"/>
+                <filter name="only_first_aid" string="Primeros Auxilios"
+                        domain="[('type','=','first_aid')]"/>
+                <filter name="only_restricted_work_case" string="Caso de Trabajo Restringido"
+                        domain="[('type','=','restricted_work_case')]"/>
+                <filter name="only_non_work_related" string="No Relacionado con Act. Laborales"
+                        domain="[('type', '=', 'non_work_related')]"/>
+                <filter name="only_near_misses_incident" string="Incidente Near Misses"
+                        domain="[('type','=','near_misses_incident')]"/>
 
                 <separator/>
                 <filter name="event_date" string="Fecha del Evento" date="event_date"/>
@@ -172,6 +187,8 @@
                 <group expand="1" string="Agrupar por">
                     <filter name="group_by_type" string="Tipo"
                             context="{'group_by': 'type'}"/>
+                    <filter name="group_by_factor_type" string="Factor Tipo"
+                            context="{'group_by': 'factor_type'}"/>
                     <filter name="group_by_severity" string="Severidad"
                             context="{'group_by': 'event_severity'}"/>
                     <filter name="group_by_work_center" string="Ubicaciones de Trabajo"
