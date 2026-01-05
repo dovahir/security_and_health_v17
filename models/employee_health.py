@@ -39,9 +39,9 @@ class EmployeeHealth(models.Model):
             else:
                 record.imc = 0.0
 
-    # Validación de fecha futura
-    @api.constrains('record_date')
-    def _check_record_date(self):
-        for record in self:
-            if record.record_date < fields.Date.today():
-                raise UserError("No puedes hacer un registro con fechas pasadas")
+    # # Validación de fecha pasada
+    # @api.constrains('record_date')
+    # def _check_record_date(self):
+    #     for record in self:
+    #         if record.record_date < fields.Date.today():
+    #             raise UserError("No puedes hacer un registro con fechas pasadas")

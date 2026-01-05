@@ -139,3 +139,29 @@ class HREmployee(models.Model):
                 'group_by': 'type',
                         },
         }
+
+    def action_open_employee_health(self):
+        self.ensure_one()
+        return {
+            'name': ('Registros de Salud para %s' % self.name),
+            'type': 'ir.actions.act_window',
+            'res_model': 'employee.health',
+            'view_mode': 'tree,form',
+            'domain': [('employee_id', '=', self.id)],
+            'context': {
+                'default_employee_id': self.id,
+                        },
+        }
+
+    def action_open_employee_pressure(self):
+        self.ensure_one()
+        return {
+            'name': ('Registros de Presión para %s' % self.name),
+            'type': 'ir.actions.act_window',
+            'res_model': 'employee.pressure',
+            'view_mode': 'tree,form',
+            'domain': [('employee_id', '=', self.id)],
+            'context': {
+                'default_employee_id': self.id,
+                        },
+        }

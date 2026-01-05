@@ -12,16 +12,28 @@
                         name="action_open_employee_situations"
                         help="Situaciones de seguridad registradas de este empleado">
                     <div>
-                        <span>Inc.</span><br/>
-                        <span><field name="incident_count_string" widget="badge" decoration-warning="incident_count_string"/></span>
+                        <span>Situaciones </span><br/>
+                        <span>de Seguridad</span>
                     </div>
+                </button>
+
+                <button class="oe_stat_button"
+                        type="object"
+                        name="action_open_employee_health"
+                        help="Registros de Salud para este empleado">
                     <div>
-                        <span>Acc.</span><br/>
-                        <span> <field name="accident_count_string" widget="badge" decoration-danger="accident_count_string"/></span>
+                        <span>Registros </span><br/>
+                        <span>de Salud</span>
                     </div>
+                </button>
+
+                <button class="oe_stat_button"
+                        type="object"
+                        name="action_open_employee_pressure"
+                        help="Registros de Presión para este Empleado">
                     <div>
-                        <span>Cua.</span><br/>
-                        <span> <field name="quasi_accident_count_string" widget="badge" decoration-info="quasi_accident_count_string"/></span>
+                        <span>Registros </span><br/>
+                        <span>de Presión</span>
                     </div>
                 </button>
             </xpath>
@@ -50,19 +62,19 @@
                     <notebook>
                         <page name="pressure_tracking" string="Seguimiento de la presión">
                             <field name="pressure_daily_ids" widget="section_and_content" nolabel="1">
-                                <tree editable="bottom">
-                                    <field name="record_date"/>
-                                    <field name="blood_pressure_systolic"/>
-                                    <field name="blood_pressure_diastolic"/>
+                                <tree editable="bottom" create="false">
+                                    <field name="record_date" readonly="1"/>
+                                    <field name="blood_pressure_systolic" readonly="1"/>
+                                    <field name="blood_pressure_diastolic" readonly="1"/>
                                 </tree>
                             </field>
                         </page>
                         <page name="medical_analysis" string="Análisis Médicos">
                             <field name="analysis_ids" nolabel="1">
-                                <tree>
-                                    <field name="name"/>
-                                    <field name="file_name"/>
-                                    <field name="analysis_date"/>
+                                <tree create="false">
+                                    <field name="name" readonly="1"/>
+                                    <field name="file_name" readonly="1"/>
+                                    <field name="analysis_date" readonly="1"/>
                                 </tree>
                             </field>
                         </page>
