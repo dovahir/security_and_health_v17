@@ -106,9 +106,21 @@
                                     <field name="details_when" required="1" readonly="state == 'concluded'"/>
                                 </group>
                                 <group string="Otros Detalles">
-                                    <field name="details_materials" required="1" readonly="state == 'concluded'"/>
-                                    <field name="details_enviroment" required="1" readonly="state == 'concluded'"/>
-                                    <field name="details_human_factors" required="1" readonly="state == 'concluded'"/>
+                                    <field name="details_materials"
+                                           required="1"
+                                           readonly="state == 'concluded'"
+                                           placeholder="Describir si existió Herramientas, maquinaria implicada y su estado."
+                                    />
+                                    <field name="details_enviroment"
+                                           required="1"
+                                           readonly="state == 'concluded'"
+                                           placeholder="Describir las condiciones de iluminación, suelo, ruido, ventilación, entre otros."
+                                    />
+                                    <field name="details_human_factors"
+                                           required="1"
+                                           readonly="state == 'concluded'"
+                                           placeholder="Ojos no en la tarea, mente no en la tarea, falta de señalización, entre otros."
+                                    />
                                 </group>
                             </group>
                             <group string="Evidencias Fotográficas" name="group_evidence">

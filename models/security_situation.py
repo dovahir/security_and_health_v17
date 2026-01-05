@@ -159,9 +159,9 @@ class SecuritySituation(models.Model):
     details_how = fields.Text(string="Cómo pasó")
     details_when = fields.Text(string="Cuándo pasó", help="Secuencia Cronológica del Suceso")
 
-    details_materials = fields.Text(string="Materiales y Equipo", help="Describir si existió Herramientas, maquinaria implicada y su estado.")
-    details_enviroment = fields.Text(string="Entorno", help="Describir las condiciones de iluminación, suelo, ruido, ventilación, entre otros.")
-    details_human_factors = fields.Text(string="Factores Humanos", help="Ojos no en la tarea, mente no en la tarea, falta de señalización, entre otros.")
+    details_materials = fields.Text(string="Materiales y Equipo")
+    details_enviroment = fields.Text(string="Entorno")
+    details_human_factors = fields.Text(string="Factores Humanos")
 
     evidence_photo_1 = fields.Image(string="Foto de evidencia 1", max_width=1024, max_height=1024)
     evidence_photo_2 = fields.Image(string="Foto de evidencia 2", max_width=1024, max_height=1024)
