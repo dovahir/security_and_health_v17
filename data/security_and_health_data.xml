@@ -277,6 +277,7 @@
 <!--        </record>-->
 
 <!--    ######################################################################################  -->
+<!--        Tipos de actividades-->
 
         <record id="activities_hot_work" model="activities.type">
             <field name="name">Trabajos en Caliente</field>
@@ -297,6 +298,70 @@
         <record id="activities_unknown" model="activities.type">
             <field name="name">Desconocida</field>
         </record>
+
+<!--    ########################################################################################-->
+
+<!--        Partes del cuerpo lesionadas-->
+
+        <record id="body_part_head" model="body.parts">
+			<field name="name">Cabeza</field>
+		</record>
+
+        <record id="body_part_eyes" model="body.parts">
+			<field name="name">Ojos</field>
+		</record>
+
+        <record id="body_part_nose" model="body.parts">
+			<field name="name">Naríz</field>
+		</record>
+
+        <record id="body_part_mouth" model="body.parts">
+			<field name="name">Boca</field>
+		</record>
+
+        <record id="body_part_ears" model="body.parts">
+			<field name="name">Orejas</field>
+		</record>
+
+        <record id="body_part_neck" model="body.parts">
+			<field name="name">Cuello</field>
+		</record>
+
+        <record id="body_part_shoulders" model="body.parts">
+			<field name="name">Hombros</field>
+		</record>
+
+        <record id="body_part_arms" model="body.parts">
+			<field name="name">Brazos</field>
+		</record>
+
+        <record id="body_part_hands" model="body.parts">
+			<field name="name">Manos</field>
+		</record>
+
+        <record id="body_part_back" model="body.parts">
+			<field name="name">Espalda</field>
+		</record>
+
+        <record id="body_part_hip" model="body.parts">
+			<field name="name">Cadera</field>
+		</record>
+
+        <record id="body_part_legs" model="body.parts">
+			<field name="name">Piernas</field>
+		</record>
+
+        <record id="body_part_knee" model="body.parts">
+			<field name="name">Rodilla</field>
+		</record>
+
+        <record id="body_part_ankle" model="body.parts">
+			<field name="name">Tobillo</field>
+		</record>
+
+        <record id="body_part_foot" model="body.parts">
+			<field name="name">Pies</field>
+		</record>
 
     </data>
 </odoo>

@@ -88,7 +88,7 @@
                             <field name="event_severity" required="1" readonly="state == 'concluded'"/>
                             <field name="immediate_actions" required="1" readonly="state == 'concluded'"/>
                             <field name="injury_type_id" readonly="state == 'concluded'"/>
-                            <field name="body_part" readonly="state == 'concluded'"/>
+                            <field name="injured_body_part" widget="many2many_checkboxes" readonly="state == 'concluded'"/>
                             <field name="injury_severity" readonly="state == 'concluded'"/>
                             <field name="injury_description" readonly="state == 'concluded'"/>
                             <field name="witnesses" widget="many2many_tags" readonly="state == 'concluded'" options="{'no_open': False, 'no_create': True}"/>

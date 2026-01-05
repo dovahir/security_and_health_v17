@@ -11,3 +11,4 @@ from . import employee_pressure
 from . import medical_analysis_parameter
 from . import medical_analysis_line
 from . import medical_analysis_type
+from . import body_parts

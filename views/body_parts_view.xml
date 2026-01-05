@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_body_parts_tree" model="ir.ui.view">
+        <field name="name">Body Parts Tree</field>
+        <field name="model">body.parts</field>
+        <field name="arch" type="xml">
+            <tree string="Partes del Cuerpo" editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_body_parts_form" model="ir.ui.view">
+        <field name="name">Body Parts Form</field>
+        <field name="model">body.parts</field>
+        <field name="arch" type="xml">
+            <form string="Partes del Cuerpo">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_body_parts" model="ir.actions.act_window">
+        <field name="name">Parámetros de Análisis</field>
+        <field name="res_model">body.parts</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

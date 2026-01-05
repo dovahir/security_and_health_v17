@@ -20,6 +20,7 @@
         'views/hr_employee_view.xml',
         'views/activities_type_view.xml',
         'views/injury_type_view.xml',
+        'views/body_parts_view.xml',
         'report/report_templates.xml',
         'views/final_report_view.xml',
         'views/employee_pressure_view.xml',
@@ -30,7 +31,7 @@
         'views/security_attention_view.xml',
         'views/menu_view.xml',
         'data/lang_no_seconds.xml',
-        'data/medical_analysis_parameter_data.xml',
+        'data/security_and_health_data.xml',
         'data/ir_sequence_data.xml',
 ],
 
