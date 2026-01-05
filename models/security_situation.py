@@ -126,26 +126,14 @@ class SecuritySituation(models.Model):
 
     injury_description = fields.Text(string="Descripción detallada de la lesión")
 
-    # body_part = fields.Selection([
-    #     ('head', 'Cabeza'),
-    #     ('eyes', 'Ojos'),
-    #     ('nose', 'Naríz'),
-    #     ('mouth', 'Boca'),
-    #     ('ears', 'Orejas'),
-    #     ('neck', 'Cuello'),
-    #     ('shoulders', 'Hombros'),
-    #     ('arms', 'Brazos'),
-    #     ('hands', 'Manos'),
-    #     ('back', 'Espalda'),
-    #     ('hip', 'Cadera'),
-    #     ('legs', 'Piernas'),
-    #     ('knee', 'Rodilla'),
-    #     ('ankle', 'Tobillo'),
-    #     ('foot', 'Pies')
-    # ], string="Parte del Cuerpo Afectada", required=True, tracking=True, help="Parte del cuerpo que fue herida/lesionada")
-
     injured_body_part = fields.Many2many('body.parts',
                                          string='Partes del Cuerpo Lesionadas')
+
+    is_injuried = fields.Selection([
+           ('yes', 'Sí'),
+           ('no', 'No')
+      ], string='¿Resultó Herido?', default='no')
+
 
     witnesses = fields.Many2many(
         comodel_name='hr.employee',
