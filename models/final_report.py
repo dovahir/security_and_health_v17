@@ -7,6 +7,7 @@ class FinalReport(models.Model):
     _name = 'final.report'
     _description = 'Reporte final'
     _rec_name = 'security_situation_id'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     # Conectar con situación de seguridad
     security_situation_id = fields.Many2one('security.situation',
@@ -26,20 +27,20 @@ class FinalReport(models.Model):
         ('na', 'N/A'),
         ('private', 'Privada'),
         ('public', 'Pública'),
-    ], string="Tipo de atención médica")
-    attention_cost = fields.Char(string="Costo de atención médica privada")
-    given_days = fields.Integer(string='Días de incapacidad', default='0')
+    ], string="Tipo de atención médica", tracking=True)
+    attention_cost = fields.Char(string="Costo de atención médica privada", tracking=True)
+    given_days = fields.Integer(string='Días de incapacidad', default='0', tracking=True)
     actual_laboral_state = fields.Selection([
         ('normal', 'Actividades normales'),
         ('not_normal', 'Actividades parciales'),
         ('out', 'Actividades nulas'),
-    ], string="Estado laboral actual")
+    ], string="Estado laboral actual", tracking=True)
     return_activities_date = fields.Date(string="Fecha de regreso a actividades normales",
                                          compute='_compute_return_activities_date',
                                          help="Basado en la fecha de creación de la situacion y los dias de incapacidad del empleado")
-    corrective_actions = fields.Text(string="Acciones correctivas")
-    lessons_learned = fields.Text(string="Lecciones aprendidas")
-    final_summary = fields.Text(string="Comentarios finales")
+    corrective_actions = fields.Text(string="Acciones Correctivas", tracking=True)
+    lessons_learned = fields.Text(string="Lecciones Aprendidas", tracking=True)
+    final_summary = fields.Text(string="Comentarios Finales", tracking=True)
 
     return_date_warning = fields.Char(
         string="Aviso de Regreso",
@@ -59,7 +60,7 @@ class FinalReport(models.Model):
                 record.return_date_warning = False
                 continue
             if return_date == today:
-                warning = "¡ATENCIÓN! El empleado debe regresar hoy."
+                warning = "¡ATENCIÓN! El empleado debería estar actualmente en labores."
             elif today < return_date <= seven_days_later:
                 remaining_days = (return_date - today).days
                 warning = f"AVISO: El empleado regresa en {remaining_days} días ({return_date.strftime('%d-%m-%Y')})."

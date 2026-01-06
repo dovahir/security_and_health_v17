@@ -24,30 +24,42 @@
                 </header>
 
                 <sheet>
-                    <group> <field name="security_situation_id" readonly="1"/> </group>
+
+                    <group>
+                        <field name="security_situation_id" readonly="1"/>
+                    </group>
                     <group>
                         <group>
-                            <field name="attention_type" invisible="attention_type != 'private'"/>
-                            <field name="attention_cost" invisible="attention_type != 'private'"/>
-                            <field name="given_days"/>
                             <field name="actual_laboral_state"/>
-                        </group>
-
-                        <group>
-                            <field name="return_activities_date"/>
-                            <field name="corrective_actions"/>
-                            <field name="lessons_learned"/>
+                            <field name="given_days" invisible="actual_laboral_state == 'normal'"/>
+                            <field name="attention_type"/>
+                            <field name="attention_cost" invisible="attention_type != 'private'"/>
                         </group>
                     </group>
-
                     <div class="alert alert-warning" role="alert" invisible="given_days == '0'">
-                        <field name="return_date_warning"
-                               nolable="1"
-                               readonly="1"
-                        />
+                        <field name="return_date_warning" nolable="1" readonly="1"/>
                     </div>
-                    <group> <field name="final_summary"/> </group>
+                    <notebook>
+                        <page string="Investigación de Causas">
+                            <field name="corrective_actions" placeholder="Causas inmediatas, Causa Raíz, Acciones..."/>
+                        </page>
+
+                        <page string="Lecciones Aprendidas">
+                                <field name="lessons_learned" placeholder="Que ocurrió, Donde, Cuando, Causa Raíz, Acciones..."/>
+                        </page>
+
+                        <page string="Comentarios Finales">
+                            <field name="final_summary" placeholder="Comentarios finales..."/>
+                        </page>
+                    </notebook>
+
                 </sheet>
+
+                 <div class="oe_chatter">
+                   <field name="message_follower_ids" groups="base.group_user"/>
+                   <field name="message_ids" widget="mail_thread"/>
+                 </div>
+
             </form>
         </field>
     </record>
