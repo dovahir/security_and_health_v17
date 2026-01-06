@@ -170,6 +170,16 @@ class SecuritySituation(models.Model):
         string='Línea de tiempo de atenciones'
     )
 
+    supervisor_ssma = fields.Many2one('hr.employee',
+                                      string="Supervisor SSMA",
+                                      ondelete='cascade',
+                                      tracking=True,
+                                      default=lambda self: self.env.user.employee_id,
+                                      required=True)
+    construction_supervisor = fields.Char(string="Supervisor de Obra")
+    # ---------------------------------------------------------------------------------------
+    is_initial_attention = fields.Boolean(string="¿Hubo atención medica inicial?")
+
     # Cambia el estado a 'Activo' (Volver a Borrador) o Concluido
     def action_conclude(self):
         self.ensure_one()

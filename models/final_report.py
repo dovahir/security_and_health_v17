@@ -22,35 +22,21 @@ class FinalReport(models.Model):
     )
 
     # Campos a mostrar en el formulario
-    investigator = fields.Char(string="Supervisor de Obra")
-    medic_diagnostic = fields.Char(string='Diagnóstico')
     attention_type = fields.Selection([
         ('na', 'N/A'),
-        ('private','Privada'),
-        ('public','Pública'),
+        ('private', 'Privada'),
+        ('public', 'Pública'),
     ], string="Tipo de atención médica")
     attention_cost = fields.Char(string="Costo de atención médica privada")
     given_days = fields.Integer(string='Días de incapacidad', default='0')
-    work_risk = fields.Selection([
-        ('no_risk','No de trabajo'),
-        ('yes_risk','Sí de trabajo')
-    ], string="Riesgo de trabajo")
     actual_laboral_state = fields.Selection([
-        ('normal','Actividades normales'),
-        ('not_normal','Actividades parciales'),
+        ('normal', 'Actividades normales'),
+        ('not_normal', 'Actividades parciales'),
         ('out', 'Actividades nulas'),
     ], string="Estado laboral actual")
     return_activities_date = fields.Date(string="Fecha de regreso a actividades normales",
                                          compute='_compute_return_activities_date',
                                          help="Basado en la fecha de creación de la situacion y los dias de incapacidad del empleado")
-    supervisor_ssma = fields.Many2one('hr.employee',
-                                      string="Supervisor SSMA",
-                                      ondelete='cascade',
-                                      tracking=True,
-                                      default=lambda self: self.env.user.employee_id,
-                                      required=True )
-    medical_treatment = fields.Char(string="Tratamiento médico")
-    initial_attention = fields.Boolean(string="¿Hubo atención medica inicial?")
     corrective_actions = fields.Text(string="Acciones correctivas")
     lessons_learned = fields.Text(string="Lecciones aprendidas")
     final_summary = fields.Text(string="Comentarios finales")
@@ -84,14 +70,14 @@ class FinalReport(models.Model):
 
             record.return_date_warning = warning
 
-    # @api.constrains('given_days', 'return_activities_date')
-    # def _checkr_return_activities_date(self):
-    #     for record in self:
-    #         if record.return_activities_date < fields.Date.today():
-    #             raise UserError("No puedes registrar una fecha pasada.")
-    #
-    #         if record.given_days < 0:
-    #             raise UserError(_("Revisar valor de días"))
+    @api.constrains('given_days', 'return_activities_date')
+    def _checkr_return_activities_date(self):
+        for record in self:
+            if record.return_activities_date < fields.Date.today():
+                raise UserError("No puedes registrar una fecha pasada.")
+
+            if record.given_days < 0:
+                raise UserError(_("Revisar valor de días"))
 
     @api.depends('return_activities_date', 'given_days', 'security_situation_id.event_date')
     def _compute_return_activities_date(self):

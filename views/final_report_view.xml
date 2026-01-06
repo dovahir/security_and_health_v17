@@ -27,20 +27,14 @@
                     <group> <field name="security_situation_id" readonly="1"/> </group>
                     <group>
                         <group>
-                            <field name="investigator"/>
-                            <field name="medic_diagnostic"/>
-                            <field name="attention_type"/>
+                            <field name="attention_type" invisible="attention_type != 'private'"/>
                             <field name="attention_cost" invisible="attention_type != 'private'"/>
                             <field name="given_days"/>
-                            <field name="work_risk"/>
                             <field name="actual_laboral_state"/>
-<!--                            <field name="return_activities_date"/>-->
                         </group>
 
                         <group>
-                            <field name="supervisor_ssma" options="{'no_create': True}"/>
-                            <field name="medical_treatment"/>
-                            <field name="initial_attention"/>
+                            <field name="return_activities_date"/>
                             <field name="corrective_actions"/>
                             <field name="lessons_learned"/>
                         </group>
@@ -52,7 +46,6 @@
                                readonly="1"
                         />
                     </div>
-
                     <group> <field name="final_summary"/> </group>
                 </sheet>
             </form>
@@ -66,9 +59,6 @@
             <tree string="Reportes Finales" create="false">
                 <field name="security_situation_id" decoration-bf="1"/>
                 <field name="final_report_employee_id" widget="many2one_avatar_user"/>
-                <field name="work_risk"/>
-                <field name="actual_laboral_state"/>
-                <field name="medic_diagnostic"/>
             </tree>
         </field>
     </record>
@@ -82,9 +72,6 @@
                 <group expand="1" string="Agrupar por">
                     <filter name="group_by_employee" string="Empleado"
                             context="{'group_by': 'final_report_employee_id'}"/>
-
-                    <filter name="group_by_work_risk" string="Riesgo de trabajo"
-                            context="{'group_by': 'work_risk'}"/>
                 </group>
             </search>
         </field>
