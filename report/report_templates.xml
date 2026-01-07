@@ -9,9 +9,30 @@
 
                             <h3>Informe de Situación de Seguridad: <span t-field="doc.security_situation_id.name"/></h3>
                             <p><strong>Fecha de Reporte:</strong> <span t-field="doc.create_date" t-options='{"widget": "date"}'/></p>
-                            <p><strong>Supervisor SSMA:</strong> <span t-field="doc.supervisor_ssma"/></p>
+                            <p><strong>Supervisor SSMA:</strong> <span t-field="doc.security_situation_id.supervisor_ssma"/></p>
 
                             <hr/>
+                            <t t-if="doc.security_situation_id.employee_id">
+
+                                <h4>Info. de Empleado</h4>
+
+                                <table class="table table-sm table-borderless" style="width: 100%;">
+                                    <thead>
+                                         <tr>
+                                            <td><strong>Empleado Involucrado: </strong><span t-field="doc.security_situation_id.employee_id.name"/></td>
+                                            <td><strong>Puesto al que pertenece: </strong><span t-field="doc.security_situation_id.job_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Departamento al que pertenece: </strong><span t-field="doc.security_situation_id.department_id"/></td>
+                                            <td><strong>Líder directo a cargo del empleado: </strong><span t-field="doc.security_situation_id.parent_id"/></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+
+                                <hr/>
+                            </t>
+
                             <h4>Detalles del Evento</h4>
 
                             <p>
@@ -20,7 +41,7 @@
                             <table class="table table-sm table-borderless" style="width: 100%;">
                                 <tr>
                                     <td><strong>Tipo de tarea: </strong><span t-field="doc.security_situation_id.activities_type_id"/></td>
-                                    <td><strong>Ubicacion de Trabajo:</strong><span t-field="doc.security_situation_id.work_center_id.name"/></td>
+                                    <td><strong>Ubicación de Trabajo:</strong><span t-field="doc.security_situation_id.work_center_id.name"/></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Tipo de situación: </strong><span t-field="doc.security_situation_id.type"/></td>
@@ -28,7 +49,6 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Severidad: </strong><span t-field="doc.security_situation_id.event_severity"/></td>
-                                    <td><strong>Empleado Involucrado: </strong><span t-field="doc.security_situation_id.employee_id.name"/></td>
                                 </tr>
                                 <t t-if="doc.security_situation_id.type == 'accident'">
                                 <tr>
@@ -43,7 +63,7 @@
                             </table>
                             <p>
                                 <strong>Descripción del Evento:</strong><br></br>
-                                <span t-field="doc.security_situation_id.details"/>
+                                <span t-field="doc.security_situation_id.details_whats"/>
                             </p>
 
 <!--                            <h4>Información del empleado</h4>-->
@@ -58,7 +78,7 @@
                             <h4>Situación Médica y Laboral</h4>
 
                             <p>
-                                <strong>Investigador: </strong><span t-field="doc.investigator"/>
+                                <strong>Investigador: </strong><span t-field="doc.security_situation_id.construction_supervisor"/>
 <!--                                <strong>Diagnostico: </strong><span t-field="doc.medic_diagnostic"/><br></br>-->
 <!--                                <strong>Tratamiento médico: </strong><span t-field="doc.medical_treatment"/><br></br>-->
 <!--                                <strong>Tipo de atención: </strong><span t-field="doc.attention_type"/><br></br>-->
@@ -69,11 +89,11 @@
 
                             <table class="table table-sm table-borderless" style="width: 100%;">
                                 <tr>
-                                    <td><strong>Diagnostico: </strong><span t-field="doc.medic_diagnostic"/></td>
+<!--                                    <td><strong>Diagnostico: </strong><span t-field=" "/></td>-->
                                     <td><strong>Estado laboral: </strong><span t-field="doc.actual_laboral_state"/></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Tratamiento médico: </strong><span t-field="doc.medical_treatment"/></td>
+<!--                                    <td><strong>Tratamiento médico: </strong><span t-field=" "/></td>-->
                                     <td><strong>Días de incapacidad: </strong><span t-field="doc.given_days"/></td>
                                 </tr>
                                 <tr>
