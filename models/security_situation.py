@@ -67,7 +67,7 @@ class SecuritySituation(models.Model):
     follow = fields.Many2one(
         'hr.employee', string="Seguimiento",
         ondelete='set null', index=True,
-        help="Empleado que atendió activamente la situación", tracking=True)
+        help="Empleado que atendió activamente la situación (Opcional)", tracking=True)
 
     company_id = fields.Many2one('res.company',
                                  string="Empresa",
@@ -142,7 +142,7 @@ class SecuritySituation(models.Model):
     witnesses = fields.Many2many(
         comodel_name='hr.employee',
         string="Testigos",
-        help="Empleados que presenciaron el evento",
+        help="Empleados que presenciaron el evento (Opcional)",
         tracking=True
     )
 
@@ -183,7 +183,7 @@ class SecuritySituation(models.Model):
            ('no', 'No')
       ], string='¿Existe Responsable de Obra?', default='no')
 
-    construction_supervisor = fields.Char(string="Supervisor de Obra")
+    construction_supervisor = fields.Char(string="Nombre del Supervisor de Obra")
     # ---------------------------------------------------------------------------------------
     is_initial_attention = fields.Boolean(string="¿Hubo atención medica inicial?")
 

@@ -11,6 +11,8 @@
                             <p><strong>Fecha de Reporte:</strong> <span t-field="doc.create_date" t-options='{"widget": "date"}'/></p>
                             <p><strong>Supervisor SSMA:</strong> <span t-field="doc.security_situation_id.supervisor_ssma"/></p>
 
+                            <hr/>
+
                             <h4>Detalles del Evento</h4>
                             <p>
                                 <strong>Fecha y Hora del Evento: </strong><span t-field="doc.security_situation_id.event_date" t-options='{"widget": "datetime"}'/>
@@ -53,6 +55,9 @@
                             </p>
 
                             <t t-if="doc.security_situation_id.employee_id">
+
+                                <hr/>
+
                                 <h4>Información del Empleado</h4>
                                 <table class="table table-sm table-borderless" style="width: 100%;">
                                     <thead>
@@ -79,6 +84,9 @@
                             </t>
 
                             <t t-if="doc.security_situation_id.employee_id and doc.security_situation_id.is_injuried == 'yes'">
+
+                                <hr/>
+
                                 <h4>Información Sobre Lesiones</h4>
                                 <table class="table table-sm table-borderless" style="width: 100%;">
                                     <thead>
@@ -105,7 +113,6 @@
                                     <span t-field="doc.security_situation_id.injury_description"/>
                                 </p>
                             </t>
-
                         </div>
                     </t>
                 </t>
