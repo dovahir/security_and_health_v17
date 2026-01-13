@@ -64,8 +64,8 @@
                         </group>
                         <group string="Responsables">
                             <field name="supervisor_ssma" options="{'no_create': True}" required="1" widget="many2one_avatar_user" readonly="state == 'concluded'"/>
-                            <field name="is_construction" readonly="state == 'concluded'" widget="radio" options="{'horizontal': true}"/>
-                            <field name="construction_supervisor" readonly="state == 'concluded'" invisible="is_construction != 'yes'"/>
+                            <field name="is_construction_supervisor" readonly="state == 'concluded'" widget="radio" options="{'horizontal': true}"/>
+                            <field name="construction_supervisor" readonly="state == 'concluded'" invisible="is_construction_supervisor != 'yes'"/>
                         </group>
                     </group>
                     <group string="Info. del Empleado">
