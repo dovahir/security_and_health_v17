@@ -81,12 +81,14 @@
                             </group>
                         </group>
                         <group>
-                            <field name="actual_laboral_state" invisible="not employee_id or is_injuried == 'no'"/>
+                            <field name="actual_laboral_state" invisible="not employee_id"/>
                             <field name="given_days"
                                    invisible="(not employee_id or actual_laboral_state == 'normal' or not actual_laboral_state) or is_injuried == 'no'"/>
                             <field name="attention_type"
                                    invisible="(not employee_id or actual_laboral_state == 'normal' or not actual_laboral_state) or is_injuried == 'no'"/>
-                            <field name="attention_cost" invisible="not employee_id or attention_type != 'private' or actual_laboral_state == 'normal' or is_injuried == 'no'" help="Costo en pesos Mexicanos"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="attention_cost" invisible="not employee_id or attention_type != 'private' or actual_laboral_state == 'normal' or is_injuried == 'no'"
+                                   help="Costo en pesos Mexicanos" widget="monetary"/>
                         </group>
                     </group>
                     <group>
