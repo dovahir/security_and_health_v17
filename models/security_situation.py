@@ -1,22 +1,24 @@
-from contextlib import nullcontext
-
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import base64
 import datetime
 from datetime import date, timedelta
 
+
 class SecuritySituation(models.Model):
     _name = 'security.situation'
     _description = 'Situación de Seguridad'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    # Campos del formulario
-    event_date = fields.Datetime(string="Fecha y Hora", default=fields.Datetime.now, required=True, tracking=True)
-
     name = fields.Char(string='Referencia', required=True, copy=False, index=True,
                        default=lambda self: _('Nueva Situación'),
                        tracking=True, readonly=True)
+
+    # Campos del formulario-----------------------------------------------------------
+    # Info de la situación--------
+
+    event_date = fields.Datetime(string="Fecha y Hora",
+                                 default=fields.Datetime.now, required=True, tracking=True)
 
     type = fields.Selection([
         ('incident', 'Incidente'),
@@ -31,14 +33,73 @@ class SecuritySituation(models.Model):
 
     rwc_days = fields.Integer(string="Días de Trabajo Restringido")
 
+    company_id = fields.Many2one(comodel_name='res.company',
+                                 string="Empresa",
+                                 required=True,
+                                 default=lambda self: self.env.user.company_id.id)
+
+    work_center_id = fields.Many2one(comodel_name='hr.work.location',
+                                     string="Ubicación de Trabajo")
+
+    work_area_id = fields.Many2one(comodel_name='work.area',
+                                   string="Área / Lugar exacto",
+                                   help="Debe seleccionar ubicación de trabajo")
+
+    activities_type_id = fields.Many2one(comodel_name='activities.type',
+                                         string="Tipo de Actividad",
+                                         tracking=True)
+
+    event_severity = fields.Selection([
+        ('minor', 'Menor'),
+        ('moderate', 'Moderado'),
+        ('high', 'Alta'),
+        ('critic', 'Crítica')
+    ], string="Severidad del Evento", required=True, tracking=True)
+
     cause = fields.Selection([
-           ('unsafe act', 'Acto Inseguro'),
-           ('insecure condition', 'Condición Insegura')
-      ], string='Causa', required=True, tracking=True)
+        ('unsafe act', 'Acto Inseguro'),
+        ('insecure condition', 'Condición Insegura')
+    ], string='Causa', required=True, tracking=True)
 
+    immediate_actions = fields.Selection([
+        ('first_aid', 'Primeros Auxilios'),
+        ('emergency_actions', 'Acciones de Emergencia'),
+        ('transfer_worker', 'Traslado del Trabajador'),
+        ('area_isolation', 'Aislamiento del Area'),
+        ('machine_lockout', 'Bloqueo de Máquina'),
+        ('internal_report', 'Reporte Interno')
+    ], string="Medidas Inmediatas", required=True, tracking=True)
 
-    employee_id = fields.Many2one(  #Opcional
-        'hr.employee', string="Empleado",
+    follow = fields.Many2one(
+        comodel_name='hr.employee', string="Seguimiento",
+        ondelete='set null', index=True,
+        help="Empleado que atendió activamente la situación (Opcional)", tracking=True)
+
+    witnesses = fields.Many2many(
+        comodel_name='hr.employee',
+        string="Testigos",
+        help="Empleados que presenciaron el evento (Opcional)",
+        tracking=True)
+
+    # Responsables--------
+
+    supervisor_ssma = fields.Many2one(comodel_name='hr.employee',
+                                      string="Supervisor SSMA",
+                                      ondelete='cascade',
+                                      tracking=True,
+                                      default=lambda self: self.env.user.employee_id,
+                                      required=True)
+    is_construction_supervisor = fields.Selection([
+        ('yes', 'Sí'),
+        ('no', 'No')
+    ], string='¿Existe Responsable de Obra?', default='no')
+
+    construction_supervisor = fields.Char(string="Nombre del Supervisor de Obra")
+
+    # Info del empleado---------
+
+    employee_id = fields.Many2one(  # Opcional
+        comodel_name='hr.employee', string="Empleado",
         ondelete='set null', index=True,
         help="Empleado involucrado (opcional). Al seleccionar, se despliegan más campos", tracking=True)
 
@@ -59,50 +120,47 @@ class SecuritySituation(models.Model):
                                     readonly=True)
 
     parent_id = fields.Many2one(comodel_name='hr.employee',
-                             related='employee_id.parent_id',
-                             string="Líder directo",
-                             help="Líder directo a cargo del empleado",
-                             store=True,
-                             readonly=True)
+                                related='employee_id.parent_id',
+                                string="Líder directo",
+                                help="Líder directo a cargo del empleado",
+                                store=True,
+                                readonly=True)
 
+    actual_laboral_state = fields.Selection([
+        ('normal', 'Actividades normales'),
+        ('not_normal', 'Actividades parciales'),
+        ('out', 'Actividades nulas'),
+    ], string="Estado laboral actual", tracking=True)
 
-    follow = fields.Many2one(
-        'hr.employee', string="Seguimiento",
-        ondelete='set null', index=True,
-        help="Empleado que atendió activamente la situación (Opcional)", tracking=True)
+    # Campos si resulta herido en 'Info del empleado'-----
 
-    company_id = fields.Many2one('res.company',
-                                 string="Empresa",
-                                 required=True,
-                                 default=lambda self: self.env.company)
+    given_days = fields.Integer(string='Días de incapacidad', default='0', tracking=True)
 
-    work_center_id = fields.Many2one('hr.work.location',
-                                     string="Ubicación de Trabajo")
+    attention_type = fields.Selection([
+        ('na', 'N/A'),
+        ('private', 'Privada'),
+        ('public', 'Pública'),
+    ], string="Tipo de atención médica", tracking=True)
 
-    work_area_id = fields.Many2one('work.area',
-                                   string="Área / Lugar exacto",
-                                   help="Debe seleccionar ubicación de trabajo")
+    currency_id = fields.Many2one(comodel_name='res.currency', string="Currency",
+                                  related='company_id.currency_id',
+                                  default=lambda self: self.env.user.company_id.currency_id.id)
 
-    event_severity = fields.Selection([
-        ('minor', 'Menor'),
-        ('moderate', 'Moderado'),
-        ('high', 'Alta'),
-        ('critic', 'Crítica')
-    ], string="Severidad del Evento", required=True, tracking=True)
+    attention_cost = fields.Monetary(string="Costo de Atención Médica Privada", tracking=True,
+                                     help="Costo total de la atención médica (En pesos MX)")
 
-    immediate_actions = fields.Selection([
-        ('first_aid', 'Primeros Auxilios'),
-        ('emergency_actions', 'Acciones de Emergencia'),
-        ('transfer_worker', 'Traslado del Trabajador'),
-        ('area_isolation', 'Aislamiento del Area'),
-        ('machine_lockout', 'Bloqueo de Máquina'),
-        ('internal_report', 'Reporte Interno')
-    ], string="Medidas Inmediatas", required=True, tracking=True)
+    # Info de lesiones---------------
 
+    is_injuried = fields.Selection([
+        ('yes', 'Sí'),
+        ('no', 'No')
+    ], string='¿Resultó Herido?', default='no', help='Al seleccionar "Sí", se abrirán otros campos')
 
-    activities_type_id = fields.Many2one('activities.type',
-                                       string="Tipo de Actividad",
-                                       tracking=True)
+    is_initial_attention = fields.Boolean(string="¿Hubo atención medica inicial?")
+
+    injury_type_id = fields.Many2one(comodel_name='injury.type',
+                                     string="Tipo de lesión",
+                                     tracking=True)
 
     factor_type = fields.Selection([
         ('by_blow', 'Por golpe'),
@@ -118,37 +176,20 @@ class SecuritySituation(models.Model):
         ('by_exposure', 'Por exposición')
     ], string="Factor Tipo", tracking=True, help="Tipo de Accidente")
 
-    injury_type_id = fields.Many2one('injury.type',
-                                     string="Tipo de lesión",
-                                     tracking=True
-                                     )
-
     injury_severity = fields.Selection([
-        ('first_aid','Solo Primeros Auxilios'),
+        ('first_aid', 'Solo Primeros Auxilios'),
         ('disabling', 'Incapacitante'),
         ('hospitalization', 'Hospitalización'),
         ('fatal', 'Fatal'),
-    ], string ="Severidad de la lesión", tracking=True)
+    ], string="Severidad de la lesión", tracking=True)
 
     injury_description = fields.Text(string="Descripción detallada de la lesión")
 
     injured_body_part = fields.Many2many('body.parts',
                                          string='Partes del Cuerpo Lesionadas')
 
-    is_injuried = fields.Selection([
-           ('yes', 'Sí'),
-           ('no', 'No')
-      ], string='¿Resultó Herido?', default='no', help='Al seleccionar "Sí", se abrirán otros campos')
+    # Notebook: Detalles y evidencias------------
 
-
-    witnesses = fields.Many2many(
-        comodel_name='hr.employee',
-        string="Testigos",
-        help="Empleados que presenciaron el evento (Opcional)",
-        tracking=True
-    )
-
-    # Notebook Detalles y evidencias
     details_whats = fields.Text(string="Qué pasó")
     details_how = fields.Text(string="Cómo pasó")
     details_when = fields.Text(string="Cuándo pasó", help="Secuencia Cronológica del Suceso")
@@ -166,47 +207,21 @@ class SecuritySituation(models.Model):
         ('concluded', 'Concluido'),
     ], string="Estado", tracking=True, default="active")
 
+    # Notebook: Seguimiento/Atenciones
 
-    # Notebook Seguimiento/Atenciones
     attention_ids = fields.One2many(
-        'security.attention',
-        'situation_id',
-        string='Línea de tiempo de atenciones'
-    )
+        comodel_name='security.attention',
+        inverse_name='situation_id',
+        string='Línea de tiempo de atenciones')
 
-    supervisor_ssma = fields.Many2one('hr.employee',
-                                      string="Supervisor SSMA",
-                                      ondelete='cascade',
-                                      tracking=True,
-                                      default=lambda self: self.env.user.employee_id,
-                                      required=True)
-    is_construction_supervisor = fields.Selection([
-           ('yes', 'Sí'),
-           ('no', 'No')
-      ], string='¿Existe Responsable de Obra?', default='no')
-
-    construction_supervisor = fields.Char(string="Nombre del Supervisor de Obra")
-    # ---------------------------------------------------------------------------------------
-    is_initial_attention = fields.Boolean(string="¿Hubo atención medica inicial?")
-
-    actual_laboral_state = fields.Selection([
-        ('normal', 'Actividades normales'),
-        ('not_normal', 'Actividades parciales'),
-        ('out', 'Actividades nulas'),
-    ], string="Estado laboral actual", tracking=True)
-    given_days = fields.Integer(string='Días de incapacidad', default='0', tracking=True)
-    # Campo return_acti... no usado aún
+    # Campo aún no en vista
     return_activities_date = fields.Date(string="Fecha de regreso a actividades normales",
                                          compute='_compute_return_activities_date',
                                          help="Basado en la fecha de creación de la situacion y los dias de incapacidad del empleado")
-    attention_type = fields.Selection([
-        ('na', 'N/A'),
-        ('private', 'Privada'),
-        ('public', 'Pública'),
-    ], string="Tipo de atención médica", tracking=True)
-    attention_cost = fields.Integer(string="Costo de Atención Médica Privada", tracking=True, help="Costo total de la atención médica (En pesos MX)")
 
-    # Cambia el estado a 'Activo' (Volver a Borrador) o Concluido
+    # Funciones---------------------------------------------------------------------------------
+
+    # Cambian el estado a 'Activo' (Volver a Borrador) o Concluido
     def action_conclude(self):
         self.ensure_one()
         self.state = 'concluded'
@@ -239,7 +254,7 @@ class SecuritySituation(models.Model):
             'res_model': 'final.report',
             'view_mode': 'form',
             'res_id': report.id,
-            'target':'current',
+            'target': 'current',
         }
 
     # No permite registrar una fecha y hora futura
@@ -249,7 +264,7 @@ class SecuritySituation(models.Model):
             if record.event_date and record.event_date > fields.Datetime.now():
                 raise UserError("No puedes registrar una fecha y hora futura para una Situación de Seguridad.")
 
-    # Funcion que hace validaciones a la imagen
+    # Funciones que hacen validaciones a la imagen
     @api.constrains('evidence_photo_1')
     def _check_evidence_photo_1(self):
         for record in self:
@@ -300,6 +315,7 @@ class SecuritySituation(models.Model):
                 vals['name'] = (self.env['ir.sequence'].next_by_code('security.situation'))
         return super().create(vals_list)
 
+    # Usado para mostrar mensaje del regreso de actividades
     @api.depends('return_activities_date')
     def _compute_return_date_warning(self):
         today = date.today()
@@ -324,16 +340,7 @@ class SecuritySituation(models.Model):
 
             record.return_date_warning = warning
 
-    @api.constrains('given_days', 'return_activities_date')
-    def _checkr_return_activities_date(self):
-        for record in self:
-            # Error al editar un evento pasado, pues toma la fecha actual y no la del evento
-            # if record.return_activities_date < fields.Date.today():
-            #     raise UserError("No puedes registrar una fecha pasada para regreso de actividades.")
-
-            if record.given_days < 0:
-                raise UserError(_("Revisar valor de días de incapacidad"))
-
+    # Para calcular la fecha de regreso de actividades
     @api.depends('return_activities_date', 'given_days', 'event_date')
     def _compute_return_activities_date(self):
         for date in self:
@@ -343,12 +350,14 @@ class SecuritySituation(models.Model):
 
             date.return_activities_date = newDate
 
+    # Restriccion para los dias de incapacidad
     @api.constrains('given_days')
     def _check_given_days(self):
         for record in self:
             if record.given_days < 0:
                 raise UserError(_("Revisar días de incapacidad (No puede ser negativo)"))
 
+    # Metodos onchange para limpiar campos segun cierta condición
     @api.onchange('type')
     def _onchange_type(self):
         if self.type != 'restricted_work_case':
