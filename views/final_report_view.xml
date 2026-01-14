@@ -2,7 +2,7 @@
 
 <odoo>
 
-    <record id="action_report_final_situation" model="ir.actions.report">
+    <record id="action_final_report_situation" model="ir.actions.report">
         <field name="name">Informe Final de Situación</field>
         <field name="model">final.report</field>
         <field name="report_type">qweb-pdf</field>
@@ -19,7 +19,7 @@
         <field name="arch" type="xml">
             <form string="Reporte Final" create="false">
                 <header>
-                    <button name="%(security_and_health.action_report_final_situation)d"
+                    <button name="%(security_and_health.action_final_report_situation)d"
                             string="Imprimir Informe" type="action" class="btn-primary" icon="fa-print"/>
                 </header>
 
