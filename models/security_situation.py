@@ -195,6 +195,7 @@ class SecuritySituation(models.Model):
         ('out', 'Actividades nulas'),
     ], string="Estado laboral actual", tracking=True)
     given_days = fields.Integer(string='Días de incapacidad', default='0', tracking=True)
+    # Campo return_acti... no usado aún
     return_activities_date = fields.Date(string="Fecha de regreso a actividades normales",
                                          compute='_compute_return_activities_date',
                                          help="Basado en la fecha de creación de la situacion y los dias de incapacidad del empleado")
@@ -326,8 +327,9 @@ class SecuritySituation(models.Model):
     @api.constrains('given_days', 'return_activities_date')
     def _checkr_return_activities_date(self):
         for record in self:
-            if record.return_activities_date < fields.Date.today():
-                raise UserError("No puedes registrar una fecha pasada para regreso de actividades.")
+            # Error al editar un evento pasado, pues toma la fecha actual y no la del evento
+            # if record.return_activities_date < fields.Date.today():
+            #     raise UserError("No puedes registrar una fecha pasada para regreso de actividades.")
 
             if record.given_days < 0:
                 raise UserError(_("Revisar valor de días de incapacidad"))
